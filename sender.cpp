@@ -33,6 +33,7 @@ void init(int& shmid, int& msqid, void*& sharedMemPtr)
  		    so manually or from the code).
      */
 
+    printf("Making keyfile\n");
     ofstream file;
     file.open("keyfile.txt");
 
@@ -61,7 +62,11 @@ void init(int& shmid, int& msqid, void*& sharedMemPtr)
     }
 
 	/* TODO: Get the id of the shared memory segment. The size of the segment must be SHARED_MEMORY_CHUNK_SIZE */
-
+ // IPC_CREAT -> tells the system to create a new memory segment for the shared memory
+ // The file's owner can read and write (06)
+ // Users in the same group as the file's owner can read (first 4)
+ // All users can read (second 4)
+ // shmid = shmget(key_t k, int size, int flag);
     shmid = shmget (key, SHARED_MEMORY_CHUNK_SIZE, 0644 | IPC_CREAT);
     if (shmid == -1) {
         perror("shmget");
@@ -127,6 +132,7 @@ void send(const char* fileName)
 		exit(-1);
 	}
 
+printf("Reading loop\n");
 	/* Read the whole file */
 	while(!feof(fp))
 	{
@@ -144,18 +150,20 @@ void send(const char* fileName)
 		/* Send a message to the receiver telling him that the data is ready
  		 * (message of type SENDER_DATA_TYPE
  		 */
+     printf("Sending to receiver\n");
      sndMsg.mtype = SENDER_DATA_TYPE;
-     if (msgsnd(msqid, &sndMsg, sizeof(int), 0) == -1) {
-       perror("msgsnd");
-       exit(1);
+     if (msgsnd(msqid, &sndMsg, sizeof(sndMsg), 0) < 0) {
+       perror("msgsnd: ");
+       exit(-1);
      }
 
 		/* Wait until the receiver sends us a message of type RECV_DONE_TYPE telling us
  		 * that he finished saving the memory chunk.
  		 */
-     if (msgrcv(msqid, &sndMsg, sizeof(int), 2, 0) == -1) {
-       perror("msgrcv");
-       exit(1);
+     printf("Waiting for receiver\n");
+     if (msgrcv(msqid, &rcvMsg, sizeof(sndMsg), RECV_DONE_TYPE, 0) < 0) {
+       perror("msgrcv: ");
+       exit(-1);
      }
 	}
 
@@ -164,11 +172,11 @@ void send(const char* fileName)
  	  * Lets tell the receiver that we have nothing more to send. We will do this by
  	  * sending a message of type SENDER_DATA_TYPE with size field set to 0.
 	  */
+    printf("End send loop\n");
     sndMsg.size = 0;
-    sndMsg.mtype = SENDER_DATA_TYPE;
-    if (msgsnd(msqid, &sndMsg, sizeof(int), 0) == -1) {
+    if (msgsnd(msqid, &sndMsg, sizeof(sndMsg), 0) < 0) {
       perror("msgsnd");
-      exit(1);
+      exit(-1);
     }
 
 
@@ -181,6 +189,7 @@ void send(const char* fileName)
 int main(int argc, char** argv)
 {
 
+  printf("Starting Sender\n");
 	/* Check the command line arguments */
 	if(argc < 2)
 	{
@@ -188,14 +197,19 @@ int main(int argc, char** argv)
 		exit(-1);
 	}
 
+  printf("Connecting Shared Memory and Message Queue\n");
 	/* Connect to shared memory and the message queue */
 	init(shmid, msqid, sharedMemPtr);
 
+  printf("Sending File\n");
 	/* Send the file */
 	send(argv[1]);
 
+  printf("Cleaning Up\n");
 	/* Cleanup */
 	cleanUp(shmid, msqid, sharedMemPtr);
+
+  printf("Finished\n");
 
 	return 0;
 }
