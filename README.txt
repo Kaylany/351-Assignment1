@@ -2,7 +2,7 @@
 Member:				section number		Emails
 1.Kayla Nguyen			03 13681		
 2.Mina Moslehpour 		03 13681		
-3.Yi Wei Lee			03 13681		
+3.Yi Wei Lee			03 13681		david83031726@csu.fullerton.edu
 
 (2) How to run?
 1. open two terminal in Linux
