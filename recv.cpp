@@ -171,10 +171,10 @@ void mainLoop()
 
             if(msgrcv(msqid, &recmes, sizeof(recmes), SENDER_DATA_TYPE, 0) < 0)
             {
-              perror("msgrcv");
+              perror("Message not received");
             }
             msgSize = recmes.size;
-     printf("New message\n");
+
         }
         /* We are done */
         else
