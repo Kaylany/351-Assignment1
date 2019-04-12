@@ -36,6 +36,7 @@ void init(int& shmid, int& msqid, void*& sharedMemPtr)
     printf("Making keyfile\n");
     ofstream file;
     file.open("keyfile.txt");
+	file>>"Hello this is our assignment 1";
 
     if (!file) {
         cout << "Unable to open file." << endl;
