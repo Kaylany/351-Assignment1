@@ -1,5 +1,5 @@
 (1)
-Member:				       section number		  Emails
+Member:				       section number		  Email
 1.Kayla Nguyen		  	03 13681		      knguyen1170@csu.fullerton.edu
 2.Mina Moslehpour 		03 13681
 3.Yi Wei Lee			    03 13681		      david83031726@csu.fullerton.edu
