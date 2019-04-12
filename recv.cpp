@@ -130,8 +130,8 @@ void mainLoop()
      */
      printf("Waiting for sender\n");
     message recmes;
-   const int meslong = sizeof(message)-sizeof(long);
-    if(msgrcv(msqid, &recmes, meslong, SENDER_DATA_TYPE, 0) < 0)
+   //const int meslong = sizeof(message)-sizeof(long);
+    if(msgrcv(msqid, &recmes, recmes, SENDER_DATA_TYPE, 0) < 0)
     {
         perror("msqid ERROR");
         //fclose(fp);
