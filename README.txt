@@ -1,7 +1,7 @@
 (1)
 Member:				       section number		  Email
 1.Kayla Nguyen		  	03 13681		      knguyen1170@csu.fullerton.edu
-2.Mina Moslehpour 		03 13681
+2.Mina Moslehpour 		03 13681          mmoslehpour@csu.fullerton.edu
 3.Yi Wei Lee			    03 13681		      david83031726@csu.fullerton.edu
 
 (2) How to compile and run
@@ -18,3 +18,6 @@ our plans and thoughts about the methods of implementation.
 Kayla Nguyen: Organizing, modifying, and debugging code.
 Mina Moslehpour: Code for senders.cpp and wrote the design.
 Yi Wei Lee: Code for recv.cpp and structured/wrote the README.txt file.
+
+(4) Extra Credit:
+NO
